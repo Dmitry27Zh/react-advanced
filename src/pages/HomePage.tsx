@@ -17,6 +17,7 @@ const HomePage = () => {
   }, [debouncedSearch])
   const handleClick = (username: string) => {
     fetchRepos(username)
+    setDropdown(false)
   }
 
   return (
