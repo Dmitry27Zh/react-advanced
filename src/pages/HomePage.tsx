@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLazyGetUserReposQuery, useSearchUsersQuery } from '../redux/github/github.api'
 import { useDebounce } from '../hooks/useDebounce'
+import RepoCard from '../components/RepoCard'
 
 const HomePage = () => {
   const [search, setSearch] = useState('')
@@ -46,7 +47,7 @@ const HomePage = () => {
         <div className="container">
           {areReposLoading && <p className="text-center">Repos are loading...</p>}
           {repos?.map((repo) => (
-            <p>{repo.url}</p>
+            <RepoCard key={repo.id} repo={repo} />
           ))}
         </div>
       </div>
