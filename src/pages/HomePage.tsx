@@ -43,6 +43,7 @@ const HomePage = () => {
             ))}
           </ul>
         )}
+        <div className="container">{areReposLoading && <p className="text-center">Repos are loading...</p>}</div>
       </div>
     </div>
   )
