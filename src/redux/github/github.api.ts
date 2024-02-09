@@ -16,7 +16,12 @@ export const githubApi = createApi({
       }),
       transformResponse: (response: ServerResponse) => response.items,
     }),
+    getUserRepos: build.query<any, string>({
+      query: (username: string) => ({
+        url: `users/${username}/repos`,
+      }),
+    }),
   }),
 })
 
-export const { useSearchUsersQuery } = githubApi
+export const { useSearchUsersQuery, useLazyGetUserReposQuery } = githubApi

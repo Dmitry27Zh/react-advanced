@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSearchUsersQuery } from '../redux/github/github.api'
+import { useLazyGetUserReposQuery, useSearchUsersQuery } from '../redux/github/github.api'
 import { useDebounce } from '../hooks/useDebounce'
 
 const HomePage = () => {
@@ -10,9 +10,13 @@ const HomePage = () => {
     skip: debouncedSearch.length === 0,
     refetchOnFocus: true,
   })
+  const [fetchRepos, { isLoading: areReposLoading, data: repos }] = useLazyGetUserReposQuery()
   useEffect(() => {
     setDropdown(debouncedSearch.trim().length > 0)
   }, [debouncedSearch])
+  const handleClick = (username: string) => {
+    fetchRepos(username)
+  }
 
   return (
     <div className="flex justify-center pt-10 mx-auto h-screen w-full">
@@ -32,6 +36,7 @@ const HomePage = () => {
               <li
                 key={user.id}
                 className="py-2 px-4 hover:bg-gray-500 hover:text-white transition-colors cursor-pointer"
+                onClick={() => handleClick(user.login)}
               >
                 {user.login}
               </li>
