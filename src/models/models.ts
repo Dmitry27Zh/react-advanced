@@ -26,7 +26,7 @@ export interface IUser {
   score: number
 }
 
-export type IRepos = IRepo[]
+export type Repos = IRepo[]
 
 export interface IRepo {
   id: number
