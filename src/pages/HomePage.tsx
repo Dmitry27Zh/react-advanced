@@ -4,12 +4,13 @@ import { useDebounce } from '../hooks/useDebounce'
 
 const HomePage = () => {
   const [search, setSearch] = useState('')
+  const [dropdown, setDropdown] = useState(false)
   const debouncedSearch = useDebounce(search)
   const { isLoading, isError, data } = useSearchUsersQuery(debouncedSearch, {
     skip: debouncedSearch.length === 0,
   })
   useEffect(() => {
-    console.log(debouncedSearch)
+    setDropdown(debouncedSearch.trim().length > 0)
   }, [debouncedSearch])
 
   return (
@@ -23,14 +24,19 @@ const HomePage = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <ul className="list-none absolute top-[42px] left-0 right-0 max-h-[200px] overflow-y-scroll shadow-md bg-white">
-          {isLoading && 'Loading...'}
-          {data?.map((user) => (
-            <li key={user.id} className="py-2 px-4 hover:bg-gray-500 hover:text-white transition-colors cursor-pointer">
-              {user.login}
-            </li>
-          ))}
-        </ul>
+        {dropdown && (
+          <ul className="list-none absolute top-[42px] left-0 right-0 max-h-[200px] overflow-y-scroll shadow-md bg-white">
+            {isLoading && 'Loading...'}
+            {data?.map((user) => (
+              <li
+                key={user.id}
+                className="py-2 px-4 hover:bg-gray-500 hover:text-white transition-colors cursor-pointer"
+              >
+                {user.login}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   )
