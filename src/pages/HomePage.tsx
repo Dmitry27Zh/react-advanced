@@ -4,8 +4,10 @@ import { useDebounce } from '../hooks/useDebounce'
 
 const HomePage = () => {
   const [search, setSearch] = useState('')
-  const { isLoading, isError, data } = useSearchUsersQuery('vasya')
   const debouncedSearch = useDebounce(search)
+  const { isLoading, isError, data } = useSearchUsersQuery(debouncedSearch, {
+    skip: debouncedSearch.length === 0,
+  })
   useEffect(() => {
     console.log(debouncedSearch)
   }, [debouncedSearch])
