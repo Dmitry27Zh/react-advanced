@@ -1,16 +1,25 @@
-import { MouseEventHandler } from 'react'
+import { MouseEventHandler, useState } from 'react'
 import { useActions } from '../hooks/useActions'
 import { IRepo } from '../models/models'
+import { useAppSelector } from '../hooks/redux'
 
 type RepoCardProps = {
   repo: IRepo
 }
 
 const RepoCard = ({ repo }: RepoCardProps) => {
-  const { addFavorite } = useActions()
-  const addToFavorite: MouseEventHandler<HTMLButtonElement> = (event) => {
+  const { addFavorite, removeFavorite } = useActions()
+  const { favorites } = useAppSelector((state) => state.github)
+  const [isFavorite, setIsFavorite] = useState(favorites.includes(repo.html_url))
+  const handleAddToFavorite: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault()
     addFavorite(repo.html_url)
+    setIsFavorite(true)
+  }
+  const handleRemoveFromFavorite: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault()
+    removeFavorite(repo.html_url)
+    setIsFavorite(false)
   }
 
   return (
@@ -26,9 +35,21 @@ const RepoCard = ({ repo }: RepoCardProps) => {
           </span>
         </p>
         <p className="text-sm font-thin">{repo.description}</p>
-        <button className="py-2 px-4 bg-yellow-400 rounded hover:shadow-md transition-all" onClick={addToFavorite}>
-          Add
-        </button>
+        {isFavorite ? (
+          <button
+            className="py-2 px-4 bg-red-400 rounded hover:shadow-md transition-all"
+            onClick={handleRemoveFromFavorite}
+          >
+            Remove
+          </button>
+        ) : (
+          <button
+            className="py-2 px-4 bg-yellow-400 rounded hover:shadow-md transition-all"
+            onClick={handleAddToFavorite}
+          >
+            Add
+          </button>
+        )}
       </a>
     </div>
   )

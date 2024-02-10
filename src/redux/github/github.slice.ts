@@ -18,7 +18,7 @@ const slice = createSlice({
       state.favorites.push(action.payload)
       localStorage.setItem(LS_FAVORITE_KEY, JSON.stringify(state.favorites))
     },
-    removeFavorites: (state, action) => {
+    removeFavorite: (state, action) => {
       state.favorites = state.favorites.filter((favorite) => favorite !== action.payload)
       localStorage.setItem(LS_FAVORITE_KEY, JSON.stringify(state.favorites))
     },
